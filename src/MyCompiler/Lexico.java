@@ -102,10 +102,10 @@ public class Lexico {
                     } else if (c == '=') {
                         lexema.append(c);
                         estado = 10;
-                    } else if (c == '<' || c =='>') {
+                    } else if (c == '<' || c == '>') {
                         lexema.append(c);
                         estado = 10;
-                                                
+
                     } else {
                         lexema.append(c);
                         throw new RuntimeException("Erro: token inválido \"" + lexema.toString() + "\"");
@@ -178,10 +178,10 @@ public class Lexico {
                     this.back();
                     return new Token(lexema.toString(), Token.TIPO_OPERADOR_ARITMETICO);
                 case 10:
-                    if (c == '=') {
+                    if (c == '=' || c == '>' && conteudo[indiceConteudo - 2] == '<') {
                         lexema.append(c);
                         return new Token(lexema.toString(), Token.TIPO_OPERADOR_RELACIONAL);
-                    }else{
+                    } else {
                         this.back();
                         return new Token(lexema.toString(), Token.TIPO_ATRIBUICAO);
                     }

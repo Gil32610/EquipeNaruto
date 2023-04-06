@@ -1,3 +1,4 @@
+<>
 *+-/%
 =
 ==
@@ -19,6 +20,9 @@ float
 'a'
 <=
 >=
+int float char while main if else
+), (, {, }, ; , ,
+<>
 
 
 $
