@@ -194,13 +194,24 @@ public class Lexico {
                         estado = 12;
                     } else if (c == '\'') {
                         lexema.append(c);
-                        estado = 11;
-                    } else
+                        estado = 13;
+                    } else {
+                        lexema.append(c);
                         throw new RuntimeException("Erro: emoji não existe \"" + lexema.toString() + "\"");
+                    }
                     break;
                 case 12:
                     this.back();
                     return new Token(lexema.toString(), Token.TIPO_EMOJI);
+                case 13:
+                    if (c == '(' || c == ')') {
+                        lexema.append(c);
+                        estado = 12;
+                    } else {
+                        lexema.append(c);
+                        throw new RuntimeException("Erro: emoji não existe \"" + lexema.toString() + "\"");
+                    }
+                    break;
                 case 99:
                     return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO);
             }
