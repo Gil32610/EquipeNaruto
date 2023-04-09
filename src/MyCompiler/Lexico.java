@@ -106,6 +106,9 @@ public class Lexico {
                         lexema.append(c);
                         estado = 10;
 
+                    }else if(c == ':'){
+                        lexema.append(c);
+                        estado = 11;
                     } else {
                         lexema.append(c);
                         throw new RuntimeException("Erro: token inválido \"" + lexema.toString() + "\"");
@@ -185,6 +188,8 @@ public class Lexico {
                         this.back();
                         return new Token(lexema.toString(), Token.TIPO_ATRIBUICAO);
                     }
+                    case 11:
+                    if(isBoca(c))
                 case 99:
                     return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO);
             }
@@ -202,5 +207,11 @@ public class Lexico {
 
     private boolean isOperand(char c) {
         return (c == '*' || c == '+' || c == '-' || c == '/' || c == '%');
+    }
+
+    private boolean isBoca(char c) {
+        if (c == ')' || c == '(' || c == 'v' || c == 'O' || c == '|' || c == 'p')
+            return true;
+        return false;
     }
 }
