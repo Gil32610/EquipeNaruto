@@ -52,7 +52,7 @@ public class Lexico {
 
     // Identificar se char é letra minúscula
     private boolean isLetra(char c) {
-        return (c >= 'a') && (c <= 'z');
+        return (c >= 'a') && (c <= 'z') || (c >= 'A') && (c <= 'Z');
     }
 
     // Identificar se char é dígito
@@ -164,15 +164,19 @@ public class Lexico {
                     if (isLetra(c) || isDigito(c)) {
                         lexema.append(c);
                         estado = 7;
-                    } else
-                        throw new RuntimeException("Erro: char mal formatado");
+                    } else {
+                        lexema.append(c);
+                        throw new RuntimeException("Erro: char mal formatado \"" + lexema.toString() + "\"");
+                    }
                     break;
                 case 7:
                     if (c == '\'') {
                         lexema.append(c);
                         estado = 8;
-                    } else
-                        throw new RuntimeException("Erro: char mal formatado");
+                    } else {
+                        lexema.append(c);
+                        throw new RuntimeException("Erro: char mal formatado \"" + lexema.toString() + "\"");
+                    }
                     break;
                 case 8:
                     this.back();
