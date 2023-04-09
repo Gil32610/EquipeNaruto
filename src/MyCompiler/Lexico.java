@@ -106,7 +106,7 @@ public class Lexico {
                         lexema.append(c);
                         estado = 10;
 
-                    }else if(c == ':'){
+                    } else if (c == ':') {
                         lexema.append(c);
                         estado = 11;
                     } else {
@@ -188,8 +188,19 @@ public class Lexico {
                         this.back();
                         return new Token(lexema.toString(), Token.TIPO_ATRIBUICAO);
                     }
-                    case 11:
-                    if(isBoca(c))
+                case 11:
+                    if (isBoca(c)) {
+                        lexema.append(c);
+                        estado = 12;
+                    } else if (c == '\'') {
+                        lexema.append(c);
+                        estado = 11;
+                    } else
+                        throw new RuntimeException("Erro: emoji não existe \"" + lexema.toString() + "\"");
+                    break;
+                case 12:
+                    this.back();
+                    return new Token(lexema.toString(), Token.TIPO_EMOJI);
                 case 99:
                     return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO);
             }
