@@ -216,6 +216,8 @@ public class Lexico {
                         throw new RuntimeException("Erro: emoji não existe \"" + lexema.toString() + "\"");
                     }
                     break;
+                case 14:
+                        
                 case 99:
                     return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO);
             }
