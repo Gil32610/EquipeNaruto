@@ -118,12 +118,15 @@ public class Lexico {
                         lexema.append(c);
                         estado = 1;
                     } else {
-                        this.back();
-                        if (isKeyWord(lexema))
-                            return new Token(lexema.toString(), Token.TIPO_PALAVRA_RESERVADA);
-                        else if (isRusso(lexema)){
-                            return new Token(lexema.toString(), Token.TIPO_RUSSO);
-                        } else {
+                        if(isRusso(lexema)){
+                            this.back();
+                            estado = 15;
+                        } else if (isKeyWord(lexema)){
+                            this.back();
+                            estado = 14;
+                        }
+                        else {
+                            this.back();
                             return new Token(lexema.toString(), Token.TIPO_IDENTIFICADOR);
                         }
                     }
@@ -217,6 +220,13 @@ public class Lexico {
                         throw new RuntimeException("Erro: emoji não existe \"" + lexema.toString() + "\"");
                     }
                     break;
+                case 14:
+                    this.back();
+                    return new Token(lexema.toString(), Token.TIPO_PALAVRA_RESERVADA);
+                case 15:
+                    this.back();
+                    return new Token(lexema.toString(), Token.TIPO_RUSSO);
+
                 case 99:
                     return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO);
             }
@@ -245,6 +255,7 @@ public class Lexico {
     private boolean isRusso(StringBuffer lexema) {
         String myLexema = lexema.toString();
         return (myLexema.equals("CSGO") || myLexema.equals("VALORANT") || myLexema.equals("GTAV")
-                || myLexema.equals("MINECRAFT") || myLexema.equals("DARKSOULS") || myLexema.equals("MARIOBROS") || myLexema.equals("POKEMON"));
+                || myLexema.equals("MINECRAFT") || myLexema.equals("DARKSOULS") || myLexema.equals("MARIOBROS")
+                || myLexema.equals("POKEMON"));
     }
 }
