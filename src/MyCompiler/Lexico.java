@@ -220,6 +220,7 @@ public class Lexico {
                     break;
                 case 14:
                     if (isLetra(c)){
+                        lexema.append(c);
                         estado = 15;
                     } else {
                         lexema.append(c);
