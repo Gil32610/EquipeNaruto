@@ -108,6 +108,9 @@ public class Lexico {
                     } else if (c == ':') {
                         lexema.append(c);
                         estado = 11;
+                    } else if(isRusso(c)){
+                        lexema.append(c);
+                        estado = 16;
                     } else {
                         lexema.append(c);
                         throw new RuntimeException("Erro: token inválido \"" + lexema.toString() + "\"");
@@ -118,10 +121,7 @@ public class Lexico {
                         lexema.append(c);
                         estado = 1;
                     } else {
-                        if (isRusso(lexema)) {
-                            this.back();
-                            estado = 15;
-                        } else if (isKeyWord(lexema)) {
+                        if (isKeyWord(lexema)) {
                             this.back();
                             estado = 14;
                         } else {
@@ -190,7 +190,7 @@ public class Lexico {
                 case 10:
                     if (c == '=' || c == '>' && conteudo[indiceConteudo - 2] == '<') {
                         lexema.append(c);
-                        estado = 16;
+                        estado = 15;
 
                     } else {
                         this.back();
@@ -226,10 +226,25 @@ public class Lexico {
                     return new Token(lexema.toString(), Token.TIPO_PALAVRA_RESERVADA);
                 case 15:
                     this.back();
-                    return new Token(lexema.toString(), Token.TIPO_RUSSO);
-                case 16:
-                    this.back();
                     return new Token(lexema.toString(), Token.TIPO_OPERADOR_RELACIONAL);
+                case 16:
+                    if (isLetra(c)){
+                        lexema.append(c);
+                        estado = 17;
+                    } else {
+                        lexema.append(c);
+                        throw new RuntimeException("Erro: RUSSO mal formatado \"" + lexema.toString() + "\"");
+                    }
+                    break;
+                case 17:
+                    if (isLetra(c) || isDigito(c)){
+                        lexema.append(c);
+                        estado = 17;
+                    } else {
+                        this.back();
+                        return new Token(lexema.toString(), Token.TIPO_RUSSO);
+                    }
+                    break;        
                 case 99:
                     return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO);
             }
@@ -255,10 +270,10 @@ public class Lexico {
         return false;
     }
 
-    private boolean isRusso(StringBuffer lexema) {
-        String myLexema = lexema.toString();
-        return (myLexema.equals("CSGO") || myLexema.equals("VALORANT") || myLexema.equals("GTAV")
-                || myLexema.equals("MINECRAFT") || myLexema.equals("DARKSOULS") || myLexema.equals("MARIOBROS")
-                || myLexema.equals("POKEMON"));
+    private boolean isRusso(char c) {
+        if(c == '@'){
+            return true;
+        }
+        return false;
     }
 }
