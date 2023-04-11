@@ -226,6 +226,7 @@ public class Lexico {
                         lexema.append(c);
                         throw new RuntimeException("Erro: RUSSO mal formatado \"" + lexema.toString() + "\"");
                     } 
+                    break;
                 case 15:
                     if (isLetra(c) || isDigito(c)){
                         lexema.append(c);
@@ -234,6 +235,7 @@ public class Lexico {
                         this.back();
                         return new Token(lexema.toString(), Token.TIPO_RUSSO);
                     }
+                    break;
                 case 99:
                     return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO);
             }
