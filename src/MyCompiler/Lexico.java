@@ -118,14 +118,13 @@ public class Lexico {
                         lexema.append(c);
                         estado = 1;
                     } else {
-                        if(isRusso(lexema)){
+                        if (isRusso(lexema)) {
                             this.back();
                             estado = 15;
-                        } else if (isKeyWord(lexema)){
+                        } else if (isKeyWord(lexema)) {
                             this.back();
                             estado = 14;
-                        }
-                        else {
+                        } else {
                             this.back();
                             return new Token(lexema.toString(), Token.TIPO_IDENTIFICADOR);
                         }
@@ -191,11 +190,13 @@ public class Lexico {
                 case 10:
                     if (c == '=' || c == '>' && conteudo[indiceConteudo - 2] == '<') {
                         lexema.append(c);
-                        return new Token(lexema.toString(), Token.TIPO_OPERADOR_RELACIONAL);
+                        estado = 16;
+
                     } else {
                         this.back();
                         return new Token(lexema.toString(), Token.TIPO_ATRIBUICAO);
                     }
+                    break;
                 case 11:
                     if (isBoca(c)) {
                         lexema.append(c);
@@ -226,7 +227,9 @@ public class Lexico {
                 case 15:
                     this.back();
                     return new Token(lexema.toString(), Token.TIPO_RUSSO);
-
+                case 16:
+                    this.back();
+                    return new Token(lexema.toString(), Token.TIPO_OPERADOR_RELACIONAL);
                 case 99:
                     return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO);
             }
