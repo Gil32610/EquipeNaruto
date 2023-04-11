@@ -1,4 +1,4 @@
-@LivedHere
+MINECRAFT
 
 1a
 1_______
@@ -34,6 +34,6 @@ int float char while main if else
 'b'
 'w'
 
-@LivedHere
+CSGO
 
 $

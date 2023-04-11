@@ -108,9 +108,6 @@ public class Lexico {
                     } else if (c == ':') {
                         lexema.append(c);
                         estado = 11;
-                    }else if(isRusso(c)){
-                        lexema.append(c);
-                        estado = 14;
                     } else {
                         lexema.append(c);
                         throw new RuntimeException("Erro: token inválido \"" + lexema.toString() + "\"");
@@ -124,9 +121,11 @@ public class Lexico {
                         this.back();
                         if (isKeyWord(lexema))
                             return new Token(lexema.toString(), Token.TIPO_PALAVRA_RESERVADA);
-                        else
+                        else if (isRusso(lexema)){
+                            return new Token(lexema.toString(), Token.TIPO_RUSSO);
+                        } else {
                             return new Token(lexema.toString(), Token.TIPO_IDENTIFICADOR);
-
+                        }
                     }
                     break;
                 case 2:
@@ -218,24 +217,6 @@ public class Lexico {
                         throw new RuntimeException("Erro: emoji não existe \"" + lexema.toString() + "\"");
                     }
                     break;
-                case 14:
-                    if (isLetra(c)){
-                        lexema.append(c);
-                        estado = 15;
-                    } else {
-                        lexema.append(c);
-                        throw new RuntimeException("Erro: RUSSO mal formatado \"" + lexema.toString() + "\"");
-                    } 
-                    break;
-                case 15:
-                    if (isLetra(c) || isDigito(c)){
-                        lexema.append(c);
-                        estado = 15;
-                    } else {
-                        this.back();
-                        return new Token(lexema.toString(), Token.TIPO_RUSSO);
-                    }
-                    break;
                 case 99:
                     return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO);
             }
@@ -261,7 +242,9 @@ public class Lexico {
         return false;
     }
 
-    private boolean isRusso(char c) {
-        return c == '@';
+    private boolean isRusso(StringBuffer lexema) {
+        String myLexema = lexema.toString();
+        return (myLexema.equals("CSGO") || myLexema.equals("VALORANT") || myLexema.equals("GTAV")
+                || myLexema.equals("MINECRAFT") || myLexema.equals("DARKSOULS") || myLexema.equals("MARIOBROS") || myLexema.equals("POKEMON"));
     }
 }
