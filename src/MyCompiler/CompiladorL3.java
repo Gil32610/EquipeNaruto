@@ -18,9 +18,9 @@ public class CompiladorL3 {
         // TODO code application logic here
         Lexico lexico = new Lexico("D:\\STUDY\\COMPILADORES\\EquipeNaruto\\src\\codigo.txt");
         Token t = null;
-        while((t = lexico.nextToken()) != null){
+        while ((t = lexico.nextToken()) != null) {
             System.out.println(t);
         }
     }
-    
+
 }

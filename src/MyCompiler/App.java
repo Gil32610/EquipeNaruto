@@ -1,7 +1,8 @@
 package MyCompiler;
 public class App {
     public static void main(String[] args) throws Exception {
-       System.out.println(isLetra('_'));
+       System.out.println("º");
+       
     }
     public static boolean isLetra(char c) {
         return (c >= 'a') && (c <= 'z');
