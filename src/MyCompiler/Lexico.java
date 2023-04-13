@@ -89,10 +89,6 @@ public class Lexico {
                         lexema.append(c);
                         estado = 5;
 
-                    } else if (c == '$') {
-                        lexema.append(c);
-                        estado = 99;
-                        this.back();
                     } else if (c == '\'') {
                         lexema.append(c);
                         estado = 6;
@@ -102,12 +98,19 @@ public class Lexico {
                     } else if (c == '=') {
                         lexema.append(c);
                         estado = 10;
-                    } else if (c == '<' || c == '>') {
-                        lexema.append(c);
-                        estado = 10;
-                    } else if (c == ':') {
+                    } else if (c == '<') {
                         lexema.append(c);
                         estado = 11;
+                    } else if (c == '>') {
+                        lexema.append(c);
+                        estado = 12;
+                    } else if (c == ':') {
+                        lexema.append(c);
+                        estado = 14;
+                    } else if (c == '$') {
+                        lexema.append(c);
+                        estado = 99;
+                        this.back();
                     } else {
                         lexema.append(c);
                         throw new RuntimeException("Erro: token inválido \"" + lexema.toString() + "\"");
@@ -123,7 +126,7 @@ public class Lexico {
                             estado = 15;
                         } else if (isKeyWord(lexema)) {
                             this.back();
-                            estado = 14;
+                            estado = 17;
                         } else {
                             this.back();
                             return new Token(lexema.toString(), Token.TIPO_IDENTIFICADOR);
@@ -188,48 +191,66 @@ public class Lexico {
                     this.back();
                     return new Token(lexema.toString(), Token.TIPO_OPERADOR_ARITMETICO);
                 case 10:
-                    if (c == '=' || c == '>' && conteudo[indiceConteudo - 2] == '<') {
+                    if (c == '=') {
                         lexema.append(c);
-                        estado = 16;
-
+                        estado = 13;
                     } else {
                         this.back();
                         return new Token(lexema.toString(), Token.TIPO_ATRIBUICAO);
                     }
                     break;
                 case 11:
-                    if (isBoca(c)) {
-                        lexema.append(c);
-                        estado = 12;
-                    } else if (c == '\'') {
+                    if (c == '>' || c == '=') {
                         lexema.append(c);
                         estado = 13;
+
                     } else {
-                        lexema.append(c);
-                        throw new RuntimeException("Erro: emoji não existe \"" + lexema.toString() + "\"");
+                        this.back();
+                        return new Token(lexema.toString(), Token.TIPO_OPERADOR_RELACIONAL);
                     }
                     break;
                 case 12:
-                    this.back();
-                    return new Token(lexema.toString(), Token.TIPO_EMOJI);
-                case 13:
-                    if (c == '(' || c == ')') {
+                    if (c == '=') {
                         lexema.append(c);
-                        estado = 12;
+                        estado = 13;
                     } else {
-                        lexema.append(c);
-                        throw new RuntimeException("Erro: emoji não existe \"" + lexema.toString() + "\"");
+                        this.back();
+                        return new Token(lexema.toString(), Token.TIPO_OPERADOR_RELACIONAL);
                     }
                     break;
-                case 14:
-                    this.back();
-                    return new Token(lexema.toString(), Token.TIPO_PALAVRA_RESERVADA);
-                case 15:
-                    this.back();
-                    return new Token(lexema.toString(), Token.TIPO_RUSSO);
-                case 16:
+                case 13:
                     this.back();
                     return new Token(lexema.toString(), Token.TIPO_OPERADOR_RELACIONAL);
+
+                case 14:
+                    if (isBoca(c)) {
+                        lexema.append(c);
+                        estado = 16;
+                    } else if (c == '\'') {
+                        lexema.append(c);
+                        estado = 15;
+
+                    } else {
+                        lexema.append(c);
+                        throw new RuntimeException("Erro: não é um emoji \"" + lexema.toString() + "\"");
+                    }
+                    break;
+                case 15:
+                    if (c == ')' || c == '(') {
+                        lexema.append(c);
+                        estado = 16;
+
+                    } else {
+                        lexema.append(c);
+                        throw new RuntimeException("Erro: não é um emoji \"" + lexema.toString() + "\"");
+                    }
+                    break;
+                case 16:
+                    this.back();
+                    return new Token(lexema.toString(), Token.TIPO_EMOJI);
+                case 17:
+                    this.back();
+                    return new Token(lexema.toString(), Token.TIPO_PALAVRA_RESERVADA);
                 case 99:
                     return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO);
             }
@@ -242,7 +263,8 @@ public class Lexico {
         String myLexema = lexema.toString();
         return (myLexema.equals("int") || myLexema.equals("float") || myLexema.equals("char")
                 || myLexema.equals("while")
-                || myLexema.equals("if") || myLexema.equals("main") || myLexema.equals("else"));
+                || myLexema.equals("if") || myLexema.equals("main") || myLexema.equals("else")
+                || myLexema.equals("double"));
     }
 
     private boolean isOperand(char c) {

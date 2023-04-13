@@ -1,39 +1,11 @@
-MINECRAFT
-
-1a
-1_______
-<>
-*+-/%
+100, 123, 932000, 1
+100.25, 5.7, 132.85
+‘a’, ‘1’,’A’
+n, num, num1, n1
+<, >, <=, >=, ==, <>
++, -, *, /, %
 =
-==
-double
-else
-n
-n1
-n123
-1
-123
-1.0
-11.0
-11.22
-)({},
-    ;
-123abs
-1_
-float
-
-<=
->=
-int float char while main if else
 ), (, {, }, ; , ,
-<>
-:')
-:)
-
-'a'
-'b'
-'w'
-
-CSGO
-
+int, float, char, while, main, if, else
+:), :(, :v, :O, :|, :p, :'), :'(
 $
