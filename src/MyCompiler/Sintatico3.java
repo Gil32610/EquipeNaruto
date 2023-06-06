@@ -59,8 +59,10 @@ public class Sintatico3 {
     }
 
     private void COMANDO_BASICO() {
-        if(token.getTipo() == Token.TIPO_IDENTIFICADOR)this.atribuicao();
-        else if(token.getLexema().equals("{"))this.B();
+        if (token.getTipo() == Token.TIPO_IDENTIFICADOR)
+            this.atribuicao();
+        else if (token.getLexema().equals("{"))
+            this.B();
     }
 
     private void atribuicao() {// E SIGINIFICA EXPRESSÃO
@@ -86,11 +88,33 @@ public class Sintatico3 {
     }
 
     private void T() {
-
+        if (this.token.getTipo() == Token.TIPO_IDENTIFICADOR ||
+                this.token.getTipo() == Token.TIPO_INTEIRO ||
+                this.token.getTipo() == Token.TIPO_REAL) {
+            this.token = this.lexico.nextToken();
+        } else {
+            throw new RuntimeException("Oxe, era para ser um identificador "
+                    + "ou número pertinho de " + this.token.getLexema());
+        }
     }
 
     private void El() {
+        if (this.token.getTipo() == Token.TIPO_OPERADOR_ARITMETICO) {
+            this.OP();
+            this.T();
+            this.El();
+        } else {
+        }
+    }
 
+    private void OP() {
+        if (this.token.getTipo() == Token.TIPO_OPERADOR_ARITMETICO) {
+            this.token = this.lexico.nextToken();
+        } else {
+            throw new RuntimeException("Oxe, era para ser um operador "
+                    + "aritmético (+,-,/,*) pertinho de " +
+                    this.token.getLexema());
+        }
     }
 
     private void declaracao() {
@@ -98,7 +122,27 @@ public class Sintatico3 {
     }
 
     private void iteracao() {
+        if (!(token.getLexema().equals("while")))
+            throw new RuntimeException();
+        token = lexico.nextToken();
+        if (!(token.getLexema().equals("(")))
+            throw new RuntimeException();
+        token = lexico.nextToken();
+        this.R();
+        if (!(token.getLexema().equals(")")))
+            throw new RuntimeException();
+        token = lexico.nextToken();
+        this.COMANDO();
+    }
 
+    private void R() {
+        if (!(token.getTipo() == Token.TIPO_IDENTIFICADOR || token.getTipo() == Token.TIPO_REAL
+                || token.getTipo() == Token.TIPO_INTEIRO))
+            throw new RuntimeException();
+        this.E();
+        if (token.getTipo() != Token.TIPO_OPERADOR_RELACIONAL)
+            throw new RuntimeException();
+        this.E();
     }
 
 }
