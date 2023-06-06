@@ -20,6 +20,10 @@ public class Sintatico3 {
             throw new RuntimeException();
         token = lexico.nextToken();
         this.B();
+        if (token.getTipo() == Token.TIPO_FIM_CODIGO) {
+            System.out.println("Você já está preparado para ser um Hokage!");
+        } else
+            System.out.println("Inclua $ para sair do Tsukuyomi Infinito");
     }
 
     private void B() {// NOVO BLOCO
@@ -28,7 +32,8 @@ public class Sintatico3 {
         token = lexico.nextToken();
         this.CS();
         if (!(token.getLexema().equals("}")))
-            throw new RuntimeException();
+            throw new RuntimeException("chave");
+        token = lexico.nextToken();
 
     }
 
@@ -75,9 +80,9 @@ public class Sintatico3 {
             throw new RuntimeException();
         token = lexico.nextToken();
         this.E();// EXPRESSAO
-        token = lexico.nextToken();
-        if (!(token.getLexema().equalsIgnoreCase(";")))
+        if (!(token.getLexema().equalsIgnoreCase(";"))){
             throw new RuntimeException();
+        }
         token = lexico.nextToken();
     }
 
@@ -118,7 +123,22 @@ public class Sintatico3 {
     }
 
     private void declaracao() {
-
+        if (!(this.token.getLexema().equals("int") ||
+                this.token.getLexema().equals("float"))) {
+            throw new RuntimeException("Tu vacilou na delcaração de variável. "
+                    + "Pertinho de: " + this.token.getLexema());
+        }
+        this.token = this.lexico.nextToken();
+        if (this.token.getTipo() != Token.TIPO_IDENTIFICADOR) {
+            throw new RuntimeException("Tu vacilou na delcaração de variável. "
+                    + "Pertinho de: " + this.token.getLexema());
+        }
+        this.token = this.lexico.nextToken();
+        if (!this.token.getLexema().equalsIgnoreCase(";")) {
+            throw new RuntimeException("Tu vacilou  na delcaração de variável. "
+                    + "Pertinho de: " + this.token.getLexema());
+        }
+        this.token = this.lexico.nextToken();
     }
 
     private void iteracao() {
@@ -142,6 +162,7 @@ public class Sintatico3 {
         this.E();
         if (token.getTipo() != Token.TIPO_OPERADOR_RELACIONAL)
             throw new RuntimeException();
+            token = lexico.nextToken();
         this.E();
     }
 
