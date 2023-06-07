@@ -1,4 +1,4 @@
-package MyCompiler;
+package MyCompiler.App;
 public class App {
     public static void main(String[] args) throws Exception {
        System.out.println("º");

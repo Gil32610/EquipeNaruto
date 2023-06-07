@@ -1,9 +1,14 @@
 main(){
     int x;
     x = 10;
-    while x >= 10){
+    while (x >= 10){
         int a;
         a = 5;
+    }
+    if(a==b){
+
+    }else{
+        
     }
 }
 $

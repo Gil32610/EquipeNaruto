@@ -1,4 +1,7 @@
-package MyCompiler;
+package MyCompiler.AnaliseSintatica;
+
+import MyCompiler.AnaliseLexica.Token;
+import MyCompiler.AnaliseLexica.Lexico;
 
 public class Sintatico3 {
     private Lexico lexico;
@@ -60,6 +63,8 @@ public class Sintatico3 {
             this.COMANDO_BASICO();
         } else if (token.getLexema().equals("while")) {
             this.iteracao();
+        } else if (token.getLexema().equals("if")) {
+            this.COND();
         }
     }
 
@@ -150,13 +155,13 @@ public class Sintatico3 {
         }
         token = lexico.nextToken();
         this.R();
-        if (!(token.getLexema().equals("Akatsuki invadiu sua vila e raptou o Jinchuriki do \")\"")))
-            throw new RuntimeException();
+        if (!(token.getLexema().equals(")")))
+            throw new RuntimeException("Akatsuki invadiu sua vila e raptou o Jinchuriki do \")\"");
         token = lexico.nextToken();
         this.COMANDO();
     }
 
-    private void R() {
+    private void R() {// Expressão relacional
         if (!(token.getTipo() == Token.TIPO_IDENTIFICADOR || token.getTipo() == Token.TIPO_REAL
                 || token.getTipo() == Token.TIPO_INTEIRO))
             throw new RuntimeException();
@@ -165,6 +170,24 @@ public class Sintatico3 {
             throw new RuntimeException();
         token = lexico.nextToken();
         this.E();
+    }
+
+    public void COND() {// Estrutura condicional
+        if (!(token.getLexema().equals("if")))
+            throw new RuntimeException();
+        token = lexico.nextToken();
+        if (!(token.getLexema().equals("(")))
+            throw new RuntimeException();
+        token = lexico.nextToken();
+        this.R();
+        if (!(token.getLexema().equals(")")))
+            throw new RuntimeException();
+        token = lexico.nextToken();
+        this.COMANDO();
+        if (!(token.getLexema().equals("else")))
+            throw new RuntimeException();
+        token = lexico.nextToken();
+        this.COMANDO();
     }
 
 }
