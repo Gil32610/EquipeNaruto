@@ -80,7 +80,7 @@ public class Sintatico3 {
             throw new RuntimeException();
         token = lexico.nextToken();
         this.E();// EXPRESSAO
-        if (!(token.getLexema().equalsIgnoreCase(";"))){
+        if (!(token.getLexema().equalsIgnoreCase(";"))) {
             throw new RuntimeException();
         }
         token = lexico.nextToken();
@@ -145,11 +145,12 @@ public class Sintatico3 {
         if (!(token.getLexema().equals("while")))
             throw new RuntimeException();
         token = lexico.nextToken();
-        if (!(token.getLexema().equals("(")))
-            throw new RuntimeException();
+        if (!(token.getLexema().equals("("))) {
+            throw new RuntimeException("Akatsuki invadiu sua vila e raptou o Jinchuriki do \"(\"");
+        }
         token = lexico.nextToken();
         this.R();
-        if (!(token.getLexema().equals(")")))
+        if (!(token.getLexema().equals("Akatsuki invadiu sua vila e raptou o Jinchuriki do \")\"")))
             throw new RuntimeException();
         token = lexico.nextToken();
         this.COMANDO();
@@ -162,7 +163,7 @@ public class Sintatico3 {
         this.E();
         if (token.getTipo() != Token.TIPO_OPERADOR_RELACIONAL)
             throw new RuntimeException();
-            token = lexico.nextToken();
+        token = lexico.nextToken();
         this.E();
     }
 
