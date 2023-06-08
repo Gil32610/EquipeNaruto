@@ -192,16 +192,52 @@ public class Sintatico3 {
     }
 
     private void M() {
-        if (!(token.getTipo() != Token.TIPO_MODIFICADOR_DE_ACESSO)) {
-            throw new RuntimeException();
-        }
-        token = lexico.nextToken();
+        if ((token.getTipo() == Token.TIPO_MODIFICADOR_DE_ACESSO)) {
+
+            token = lexico.nextToken();
+            if (!(token.getLexema().equals("int") || token.getLexema().equals("float")
+                    || token.getLexema().equals("char"))) {
+                throw new RuntimeException();
+            }
+            token = lexico.nextToken();
+            if (!(token.getLexema().equals("("))) {
+                throw new RuntimeException();
+            }
+            token = lexico.nextToken();
+            this.P();
+        } else
+            ;
+
+    }
+
+    private void P() {
+        if (token.getLexema().equals("int") || token.getLexema().equals("float")
+                || token.getLexema().equals("char")) {
+            this.A();
+            this.Pl();
+        } else
+            ;
+    }
+
+    private void A() {
         if (!(token.getLexema().equals("int") || token.getLexema().equals("float")
                 || token.getLexema().equals("char"))) {
             throw new RuntimeException();
         }
         token = lexico.nextToken();
-        this.A();
+        if (!(token.getTipo() != Token.TIPO_IDENTIFICADOR)) {
+            throw new RuntimeException();
+        }
+        token = lexico.nextToken();
+    }
+
+    private void Pl() {
+        if (token.getLexema().equals(",")) {
+            token = lexico.nextToken();
+            this.A();
+            this.Pl();
+        } else
+            ;
     }
 
     private void ID() {
@@ -209,9 +245,6 @@ public class Sintatico3 {
             throw new RuntimeException();
         }
         token = lexico.nextToken();
-    }
-    private void A(){
-        
     }
 
 }
