@@ -30,7 +30,6 @@ public class Sintatico3 {
             System.out.println("Inclua $ para sair do Tsukuyomi Infinito");
     }
 
-   
     private void B() {// NOVO BLOCO
         if (!(token.getLexema().equals("{")))
             throw new RuntimeException();
@@ -193,7 +192,26 @@ public class Sintatico3 {
     }
 
     private void M() {
+        if (!(token.getTipo() != Token.TIPO_MODIFICADOR_DE_ACESSO)) {
+            throw new RuntimeException();
+        }
+        token = lexico.nextToken();
+        if (!(token.getLexema().equals("int") || token.getLexema().equals("float")
+                || token.getLexema().equals("char"))) {
+            throw new RuntimeException();
+        }
+        token = lexico.nextToken();
+        this.A();
     }
 
+    private void ID() {
+        if (!(token.getTipo() != Token.TIPO_IDENTIFICADOR)) {
+            throw new RuntimeException();
+        }
+        token = lexico.nextToken();
+    }
+    private void A(){
+        
+    }
 
 }

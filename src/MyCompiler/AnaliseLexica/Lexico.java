@@ -312,7 +312,7 @@ public class Lexico {
         return (myLexema.equals("int") || myLexema.equals("float") || myLexema.equals("char")
                 || myLexema.equals("while")
                 || myLexema.equals("if") || myLexema.equals("main") || myLexema.equals("else")
-                || myLexema.equals("double") || myLexema.equals("static"));
+                || myLexema.equals("double") || myLexema.equals("static") || myLexema.equals("void"));
     }
 
     private boolean isAccessModifier(StringBuffer lexema) {
