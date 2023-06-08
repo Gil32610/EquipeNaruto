@@ -23,12 +23,14 @@ public class Sintatico3 {
             throw new RuntimeException();
         token = lexico.nextToken();
         this.B();
+        this.M();
         if (token.getTipo() == Token.TIPO_FIM_CODIGO) {
             System.out.println("Você já está preparado para ser um Hokage!");
         } else
             System.out.println("Inclua $ para sair do Tsukuyomi Infinito");
     }
 
+   
     private void B() {// NOVO BLOCO
         if (!(token.getLexema().equals("{")))
             throw new RuntimeException();
@@ -189,5 +191,9 @@ public class Sintatico3 {
         token = lexico.nextToken();
         this.COMANDO();
     }
+
+    private void M() {
+    }
+
 
 }

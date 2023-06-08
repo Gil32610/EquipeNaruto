@@ -1,6 +1,7 @@
 main(){
     int x;
     x = 10;
+    b = 10+20+10;
     while (x >= 10){
         int a;
         a = 5;

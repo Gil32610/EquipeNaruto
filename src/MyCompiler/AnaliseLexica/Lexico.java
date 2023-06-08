@@ -133,6 +133,9 @@ public class Lexico {
                         } else if (isKeyWord(lexema)) {
                             this.back();
                             estado = 17;
+                        } else if (isAccessModifier(lexema)) {
+                            this.back();
+                            estado = 22;
                         } else {
                             this.back();
                             return new Token(lexema.toString(), Token.TIPO_IDENTIFICADOR);
@@ -292,6 +295,10 @@ public class Lexico {
                         return new Token(lexema.toString(), Token.TIPO_RUSSO);
                     }
                     break;
+                case 22:
+                    this.back();
+                    return new Token(lexema.toString(), Token.TIPO_MODIFICADOR_DE_ACESSO);
+
                 case 99:
                     return new Token(lexema.toString(), Token.TIPO_FIM_CODIGO);
             }
@@ -305,7 +312,12 @@ public class Lexico {
         return (myLexema.equals("int") || myLexema.equals("float") || myLexema.equals("char")
                 || myLexema.equals("while")
                 || myLexema.equals("if") || myLexema.equals("main") || myLexema.equals("else")
-                || myLexema.equals("double"));
+                || myLexema.equals("double") || myLexema.equals("static"));
+    }
+
+    private boolean isAccessModifier(StringBuffer lexema) {
+        String myLexema = lexema.toString();
+        return (myLexema.equals("public")) || (myLexema.equals("private")) || (myLexema.equals("protected"));
     }
 
     private boolean isOperand(char c) {

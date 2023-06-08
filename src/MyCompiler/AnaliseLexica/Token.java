@@ -22,6 +22,7 @@ public class Token {
     public static int TIPO_EMOJI = 9;
     public static int TIPO_RUSSO = 10;
     public static int TIPO_LEET = 11;
+    public static final int TIPO_MODIFICADOR_DE_ACESSO = 12;
     public static int TIPO_FIM_CODIGO = 99;
 
     private int tipo; // tipo do token
@@ -67,6 +68,8 @@ public class Token {
                 return this.lexema + " - RUSSO";
             case 11:
                 return this.lexema + " - L337";
+            case 12:
+                return this.lexema + " - MODIFICADOR_DE_ACESSO";
             case 99:
                 return this.lexema + " - FIM_CODIGO";
         }
