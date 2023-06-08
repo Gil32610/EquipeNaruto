@@ -192,10 +192,20 @@ public class Sintatico3 {
     }
 
     private void M() {
+
+        this.METHOD();
+        this.Ml();
+
+    }
+
+    private void METHOD() {
         if ((token.getTipo() == Token.TIPO_MODIFICADOR_DE_ACESSO)) {
 
             token = lexico.nextToken();
-            this.D();
+            if (token.getLexema().equals("void"))
+                this.Rv();
+            else
+                this.Re();
             this.ID();
             if (!(token.getLexema().equals("("))) {
                 throw new RuntimeException();
@@ -203,13 +213,20 @@ public class Sintatico3 {
             token = lexico.nextToken();
             this.P();
             if (!(token.getLexema().equals(")"))) {
-                throw new RuntimeException();
+                throw new RuntimeException("Falta o \")\" perto de " + token.getLexema());
             }
             token = lexico.nextToken();
             this.B();
-        } else
-            ;
+        }
+    }
 
+    private void Ml() {
+        if (token.getTipo() == Token.TIPO_MODIFICADOR_DE_ACESSO) {
+            this.METHOD();
+            this.Ml();
+        } else {
+
+        }
     }
 
     private void P() {
@@ -237,15 +254,30 @@ public class Sintatico3 {
 
     private void ID() {
         if ((token.getTipo() != Token.TIPO_IDENTIFICADOR)) {
-            throw new RuntimeException();
+            throw new RuntimeException("Esperava um identificador para o argumento!");
         }
         token = lexico.nextToken();
     }
 
-    private void D() {
+    private void D() {//
         if (!(token.getLexema().equals("int") || token.getLexema().equals("float")
                 || token.getLexema().equals("char"))) {
-            throw new RuntimeException();
+            throw new RuntimeException("Esperava um Tipo de dado próximo a " + token.getLexema());
+        }
+        token = lexico.nextToken();
+    }
+
+    private void Re() {
+        if (!(token.getLexema().equals("int") || token.getLexema().equals("float")
+                || token.getLexema().equals("char"))) {
+            throw new RuntimeException("Tipo de chakra para retorno faltando!");
+        }
+        token = lexico.nextToken();
+    }
+
+    private void Rv() {
+        if (!(token.getLexema().equals("void"))) {
+            throw new RuntimeException("Tipo de chakra para retorno faltando!");
         }
         token = lexico.nextToken();
     }

@@ -13,6 +13,14 @@ main(){
     }
 }
 public int contar(){
-    
+int b;
+b =20;
+while(b>0){
+    b = b -1;
+}
+}
+
+private void repetir(){
+
 }
 $
