@@ -1,26 +1,16 @@
-main(){
-    int x;
-    x = 10;
-    b = 10+20+10;
-    while (x >= 10){
-        int a;
-        a = 5;
+main(){ 
+    int b;
+    b = 10/20 * 18;
+   while(b>=10) {
+        int g;
+        g =10;
     }
-    if(a==b){
-
-    }else{
-        
+    int f;
+    while(b>=10){
+        f = 32;
+        int h;
     }
-}
-public int contar(){
-int b;
-b =20;
-while(b>0){
-    b = b -1;
-}
+    h =10;
 }
 
-private void repetir(){
-int value;
-}
 $

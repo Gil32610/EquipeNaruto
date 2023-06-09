@@ -1,14 +1,25 @@
 package MyCompiler.AnaliseSintatica;
 
 import MyCompiler.AnaliseLexica.Token;
+
+import java.util.ArrayList;
+
 import MyCompiler.AnaliseLexica.Lexico;
 
 public class Sintatico3 {
     private Lexico lexico;
     private Token token;
+    private ArrayList<String> variables;
+    private ArrayList<Integer> references;
+    private int currentPos;
+    private int scope;
 
     public Sintatico3(Lexico lexico) {
         this.lexico = lexico;
+        variables = new ArrayList<String>();
+        references = new ArrayList<>();
+        currentPos = 0;
+        scope = 0;
     }
 
     public void S() {
@@ -32,11 +43,18 @@ public class Sintatico3 {
 
     private void B() {// NOVO BLOCO
         if (!(token.getLexema().equals("{")))
-            throw new RuntimeException();
+            throw new RuntimeException("FALTOU ABRIR O ESCOPO!");
         token = lexico.nextToken();
         this.CS();
+        for (int i = currentPos - 1; i >= scope; i--) {
+            variables.remove(i);
+            references.remove(i);
+        }
+        currentPos -= scope;
+        scope = currentPos;
+
         if (!(token.getLexema().equals("}")))
-            throw new RuntimeException("chave");
+            throw new RuntimeException("FECHE O ESCOPO!");
         token = lexico.nextToken();
 
     }
@@ -72,14 +90,18 @@ public class Sintatico3 {
     private void COMANDO_BASICO() {
         if (token.getTipo() == Token.TIPO_IDENTIFICADOR)
             this.atribuicao();
-        else if (token.getLexema().equals("{"))
+        else if (token.getLexema().equals("{")) {
+            scope = currentPos;
             this.B();
+        }
+
     }
 
     private void atribuicao() {// E SIGINIFICA EXPRESSÃO
         if (token.getTipo() != Token.TIPO_IDENTIFICADOR)
             throw new RuntimeException();
-
+        if (!(variables.contains(token.getLexema())))
+            throw new RuntimeException("VARIAVEL " + token.getLexema() + " NÃO DECLARADA");
         token = lexico.nextToken();
 
         if (token.getTipo() != token.TIPO_ATRIBUICAO)
@@ -87,7 +109,7 @@ public class Sintatico3 {
         token = lexico.nextToken();
         this.E();// EXPRESSAO
         if (!(token.getLexema().equalsIgnoreCase(";"))) {
-            throw new RuntimeException();
+            throw new RuntimeException("A besta de 9 caudas foi libertada e destruiu a estrutura do código");
         }
         token = lexico.nextToken();
     }
@@ -139,6 +161,12 @@ public class Sintatico3 {
             throw new RuntimeException("Tu vacilou na delcaração de variável. "
                     + "Pertinho de: " + this.token.getLexema());
         }
+        if (variables.contains(token.getLexema())) {
+            throw new RuntimeException();
+        }
+        variables.add(token.getLexema());
+        references.add(variables.indexOf(token.getLexema()));
+        currentPos++;
         this.token = this.lexico.nextToken();
         if (!this.token.getLexema().equalsIgnoreCase(";")) {
             throw new RuntimeException("Tu vacilou  na delcaração de variável. "
@@ -165,10 +193,10 @@ public class Sintatico3 {
     private void R() {// Expressão relacional
         if (!(token.getTipo() == Token.TIPO_IDENTIFICADOR || token.getTipo() == Token.TIPO_REAL
                 || token.getTipo() == Token.TIPO_INTEIRO))
-            throw new RuntimeException();
+            throw new RuntimeException("Esperava um Identificador ou um tipo de Dado");
         this.E();
         if (token.getTipo() != Token.TIPO_OPERADOR_RELACIONAL)
-            throw new RuntimeException();
+            throw new RuntimeException("Para um genjutsu desse nível, não há comparação.");
         token = lexico.nextToken();
         this.E();
     }
@@ -178,15 +206,15 @@ public class Sintatico3 {
             throw new RuntimeException();
         token = lexico.nextToken();
         if (!(token.getLexema().equals("(")))
-            throw new RuntimeException();
+            throw new RuntimeException("Akatsuki invadiu sua vila e raptou o Jinchuriki do \"(\"");
         token = lexico.nextToken();
         this.R();
         if (!(token.getLexema().equals(")")))
-            throw new RuntimeException();
+            throw new RuntimeException("Akatsuki invadiu sua vila e raptou o Jinchuriki do \")\"");
         token = lexico.nextToken();
         this.COMANDO();
         if (!(token.getLexema().equals("else")))
-            throw new RuntimeException();
+            throw new RuntimeException("Cadê o else???");
         token = lexico.nextToken();
         this.COMANDO();
     }
@@ -208,12 +236,15 @@ public class Sintatico3 {
                 this.Re();
             this.ID();
             if (!(token.getLexema().equals("("))) {
-                throw new RuntimeException();
+                throw new RuntimeException("Akatsuki invadiu sua vila e raptou o Jinchuriki do \"(\"");
             }
             token = lexico.nextToken();
+            if (!(token.getLexema().equals("int") || token.getLexema().equals("float")
+                    || token.getLexema().equals("char")))
+                throw new RuntimeException("Madara ressucitou e atacou a aliança do Tipo de Dado");
             this.P();
             if (!(token.getLexema().equals(")"))) {
-                throw new RuntimeException("Falta o \")\" perto de " + token.getLexema());
+                throw new RuntimeException("Akatsuki invadiu sua vila e raptou o Jinchuriki do \")\"");
             }
             token = lexico.nextToken();
             this.B();
@@ -254,7 +285,7 @@ public class Sintatico3 {
 
     private void ID() {
         if ((token.getTipo() != Token.TIPO_IDENTIFICADOR)) {
-            throw new RuntimeException("Esperava um identificador para o argumento!");
+            throw new RuntimeException("Esperava um identificador!");
         }
         token = lexico.nextToken();
     }
@@ -262,7 +293,7 @@ public class Sintatico3 {
     private void D() {//
         if (!(token.getLexema().equals("int") || token.getLexema().equals("float")
                 || token.getLexema().equals("char"))) {
-            throw new RuntimeException("Esperava um Tipo de dado próximo a " + token.getLexema());
+            throw new RuntimeException("Selo não existe ou não é um jutsu");
         }
         token = lexico.nextToken();
     }
