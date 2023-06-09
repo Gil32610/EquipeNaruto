@@ -47,7 +47,7 @@ public class Sintatico3 {
 
     private void B() {// NOVO BLOCO
         if (!(token.getLexema().equals("{")))
-            throw new RuntimeException("FALTOU ABRIR O ESCOPO!");
+            throw new RuntimeException("Faltou abrir o pergaminho(Escopo), perto de: "+token.getLexema());
         token = lexico.nextToken();
         this.CS();
         for (int i = currentPos - 1; i >= scope; i--) {
@@ -58,7 +58,7 @@ public class Sintatico3 {
         scope = im - scope;
 
         if (!(token.getLexema().equals("}")))
-            throw new RuntimeException("FECHE O ESCOPO!");
+            throw new RuntimeException("Faltou fechar o pergaminho(Escopo), perto de: "+token.getLexema());
         token = lexico.nextToken();
 
     }
@@ -105,7 +105,7 @@ public class Sintatico3 {
         if (token.getTipo() != Token.TIPO_IDENTIFICADOR)
             throw new RuntimeException();
         if (!(variables.contains(token.getLexema())))
-            throw new RuntimeException("VARIAVEL " + token.getLexema() + " NÃO DECLARADA");
+            throw new RuntimeException("O nome do jutsu(variável): " + token.getLexema() + ", não foi declarado");
         token = lexico.nextToken();
 
         if (token.getTipo() != token.TIPO_ATRIBUICAO)
@@ -113,7 +113,7 @@ public class Sintatico3 {
         token = lexico.nextToken();
         this.E();// EXPRESSAO
         if (!(token.getLexema().equalsIgnoreCase(";"))) {
-            throw new RuntimeException("A besta de 9 caudas foi libertada, destruiu \";\" perto de \""
+            throw new RuntimeException("A besta de 9 caudas foi libertada, destruiu \";\" perto de: \""
                     + token.getLexema() + "\", e atacou Konoha.");
         }
         token = lexico.nextToken();
@@ -130,12 +130,11 @@ public class Sintatico3 {
                 this.token.getTipo() == Token.TIPO_INTEIRO ||
                 this.token.getTipo() == Token.TIPO_REAL) {
             if ((token.getTipo() == Token.TIPO_IDENTIFICADOR) && !(variables.contains(token.getLexema()))) {
-                throw new RuntimeException("Variável " + token.getLexema() + " não declarada!");
+                throw new RuntimeException("O nome do jutsu(variável): " + token.getLexema() + ", não foi declarado");
             }
             this.token = this.lexico.nextToken();
         } else {
-            throw new RuntimeException("Oxe, era para ser um identificador "
-                    + "ou número pertinho de " + this.token.getLexema());
+            throw new RuntimeException("Não informou o Identificador do Jutsu, "+"Pertinho de: "+token.getLexema());
         }
     }
 
@@ -152,22 +151,18 @@ public class Sintatico3 {
         if (this.token.getTipo() == Token.TIPO_OPERADOR_ARITMETICO) {
             this.token = this.lexico.nextToken();
         } else {
-            throw new RuntimeException("Oxe, era para ser um operador "
-                    + "aritmético (+,-,/,*) pertinho de " +
-                    this.token.getLexema());
+            throw new RuntimeException("Oxe, era para ser um dos 4 hokages "+"aritméticos (+,-,/,*), pertinho de: "+token.getLexema());
         }
     }
 
     private void declaracao() {
         if (!(this.token.getLexema().equals("int") ||
                 this.token.getLexema().equals("float"))) {
-            throw new RuntimeException("Tu vacilou na delcaração de variável. "
-                    + "Pertinho de: " + this.token.getLexema());
+            throw new RuntimeException("Selo desconhecido: "+token.getLexema()+", diferente de int, char ou float");
         }
         this.token = this.lexico.nextToken();
         if (this.token.getTipo() != Token.TIPO_IDENTIFICADOR) {
-            throw new RuntimeException("Tu vacilou na delcaração de variável. "
-                    + "Pertinho de: " + this.token.getLexema());
+            throw new RuntimeException("Não informou o Identificador do Jutsu, "+"Pertinho de: "+token.getLexema());
         }
         if (variables.contains(token.getLexema())) {
             throw new RuntimeException();
@@ -177,7 +172,7 @@ public class Sintatico3 {
         currentPos++;
         this.token = this.lexico.nextToken();
         if (!this.token.getLexema().equalsIgnoreCase(";")) {
-            throw new RuntimeException("A besta de 9 caudas foi libertada, destruiu \";\" perto de \""
+            throw new RuntimeException("A besta de 9 caudas foi libertada, destruiu o: \";\" perto de: \""
                     + token.getLexema() + "\", e atacou Konoha.");
         }
         this.token = this.lexico.nextToken();
@@ -188,12 +183,12 @@ public class Sintatico3 {
             throw new RuntimeException();
         token = lexico.nextToken();
         if (!(token.getLexema().equals("("))) {
-            throw new RuntimeException("Akatsuki invadiu sua vila e raptou o Jinchuriki do \"(\"");
+            throw new RuntimeException("Akatsuki invadiu a vila da Repetição e raptou o Jinchuriki: \"(\", perto do: "+token.getLexema());
         }
         token = lexico.nextToken();
         this.R();
         if (!(token.getLexema().equals(")")))
-            throw new RuntimeException("Akatsuki invadiu sua vila e raptou o Jinchuriki do \")\"");
+            throw new RuntimeException("Akatsuki invadiu a vila da Repetição e raptou o Jinchuriki: \")\", perto do: "+token.getLexema());
         token = lexico.nextToken();
         this.COMANDO();
     }
@@ -201,10 +196,10 @@ public class Sintatico3 {
     private void R() {// Expressão relacional
         if (!(token.getTipo() == Token.TIPO_IDENTIFICADOR || token.getTipo() == Token.TIPO_REAL
                 || token.getTipo() == Token.TIPO_INTEIRO))
-            throw new RuntimeException("Esperava um Identificador ou um tipo de Dado");
+            throw new RuntimeException("Tinha que ser um ninja nível Identificador ou Tipo de Dado");
         this.E();
         if (token.getTipo() != Token.TIPO_OPERADOR_RELACIONAL)
-            throw new RuntimeException("Para um genjutsu desse nível, não há comparação.");
+            throw new RuntimeException("Para um genjutsu desse nível: "+token.getLexema()+", não há comparação.");
         token = lexico.nextToken();
         this.E();
     }
@@ -214,15 +209,15 @@ public class Sintatico3 {
             throw new RuntimeException();
         token = lexico.nextToken();
         if (!(token.getLexema().equals("(")))
-            throw new RuntimeException("Akatsuki invadiu sua vila e raptou o Jinchuriki do \"(\"");
+            throw new RuntimeException("Akatsuki invadiu a vila Condicional e raptou o Jinchuriki: \"(\", perto do: "+token.getLexema());
         token = lexico.nextToken();
         this.R();
         if (!(token.getLexema().equals(")")))
-            throw new RuntimeException("Akatsuki invadiu sua vila e raptou o Jinchuriki do \")\"");
+            throw new RuntimeException("Akatsuki invadiu a vila Condicional e raptou o Jinchuriki: \")\", perto do: "+token.getLexema());
         token = lexico.nextToken();
         this.COMANDO();
         if (!(token.getLexema().equals("else")))
-            throw new RuntimeException("Cadê o else???");
+            throw new RuntimeException("O selo else não foi realizado perto do: "+token.getLexema()+", jutsu falhou!");
         token = lexico.nextToken();
         this.COMANDO();
     }
@@ -244,15 +239,15 @@ public class Sintatico3 {
                 this.Re();
             this.ID();
             if (!(token.getLexema().equals("("))) {
-                throw new RuntimeException("Akatsuki invadiu sua vila e raptou o Jinchuriki do \"(\"");
+                throw new RuntimeException("Akatsuki invadiu a vila Método e raptou o Jinchuriki: \"(\", perto do: "+token.getLexema());
             }
             token = lexico.nextToken();
             if (!(token.getLexema().equals("int") || token.getLexema().equals("float")
                     || token.getLexema().equals("char")))
-                throw new RuntimeException("Madara ressucitou e atacou a aliança do Tipo de Dado");
+                throw new RuntimeException("Madara ressucitou e atacou a aliança do Tipo de Dado dos Métodos :"+token.getLexema());
             this.P();
             if (!(token.getLexema().equals(")"))) {
-                throw new RuntimeException("Akatsuki invadiu sua vila e raptou o Jinchuriki do \")\"");
+                throw new RuntimeException("Akatsuki invadiu a vila Método e raptou o Jinchuriki: \")\", perto do: "+token.getLexema());
             }
             token = lexico.nextToken();
             this.B();
@@ -293,7 +288,7 @@ public class Sintatico3 {
 
     private void ID() {
         if ((token.getTipo() != Token.TIPO_IDENTIFICADOR)) {
-            throw new RuntimeException("Esperava um identificador!");
+            throw new RuntimeException("Não informou o Identificador do Jutsu, "+"Pertinho de: "+token.getLexema());
         }
         variables.add(token.getLexema());
         currentPos++;
@@ -303,7 +298,7 @@ public class Sintatico3 {
     private void D() {//
         if (!(token.getLexema().equals("int") || token.getLexema().equals("float")
                 || token.getLexema().equals("char"))) {
-            throw new RuntimeException("Selo não existe ou não é um jutsu");
+            throw new RuntimeException("Selo desconhecido: "+token.getLexema()+", diferente de int, char ou float");
         }
         token = lexico.nextToken();
     }
@@ -311,14 +306,14 @@ public class Sintatico3 {
     private void Re() {
         if (!(token.getLexema().equals("int") || token.getLexema().equals("float")
                 || token.getLexema().equals("char"))) {
-            throw new RuntimeException("Tipo de chakra para retorno faltando!");
+            throw new RuntimeException("Selo desconhecido: "+token.getLexema()+", diferente de int, char ou float");
         }
         token = lexico.nextToken();
     }
 
     private void Rv() {
         if (!(token.getLexema().equals("void"))) {
-            throw new RuntimeException("Tipo de chakra para retorno faltando!");
+            throw new RuntimeException("Selo desconhecido: "+token.getLexema()+", diferente de int, char ou float");
         }
         token = lexico.nextToken();
     }
