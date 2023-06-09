@@ -4,7 +4,7 @@ main() {
      variavel = 30+20*10;
 
      while(variavel <= 240) {
-             variavel = variavel+5;
+            variavel = variavel+5;
      }
 }
 public int testeFuncao(float variavel) {
