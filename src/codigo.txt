@@ -1,18 +1,14 @@
-main(){ 
-    int b;
-    b = 10/20 * 18;
-   while(b>=10) {
-        int g;
-        g =10;
-    }
-    int f;
-    while(b>=10){
-        f = 32;
-        int h;
-    }
-}
-public void Methodd(float a){
-    a= 10;
-}
+main() {
 
-$
+     float variavel;
+     variavel = 30+20*10;
+
+     while(variavel <= 240) {
+             variavel = variavel+5;
+     }
+}
+public int testeFuncao(float variavel) {
+
+      variavel = variavel+10;
+}
+$ 

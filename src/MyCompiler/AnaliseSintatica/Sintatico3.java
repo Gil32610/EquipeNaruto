@@ -34,6 +34,10 @@ public class Sintatico3 {
             throw new RuntimeException();
         token = lexico.nextToken();
         this.B();
+        variables.clear();
+        references.clear();
+        currentPos = 0;
+        scope = 0;
         this.M();
         if (token.getTipo() == Token.TIPO_FIM_CODIGO) {
             System.out.println("Você já está preparado para ser um Hokage!");
@@ -48,10 +52,10 @@ public class Sintatico3 {
         this.CS();
         for (int i = currentPos - 1; i >= scope; i--) {
             variables.remove(i);
-            references.remove(i);
         }
-        currentPos -= scope;
-        scope = currentPos;
+        int im = currentPos;
+        currentPos = scope;
+        scope = im - scope;
 
         if (!(token.getLexema().equals("}")))
             throw new RuntimeException("FECHE O ESCOPO!");
@@ -125,6 +129,9 @@ public class Sintatico3 {
         if (this.token.getTipo() == Token.TIPO_IDENTIFICADOR ||
                 this.token.getTipo() == Token.TIPO_INTEIRO ||
                 this.token.getTipo() == Token.TIPO_REAL) {
+            if ((token.getTipo() == Token.TIPO_IDENTIFICADOR) && !(variables.contains(token.getLexema()))) {
+                throw new RuntimeException("Variável " + token.getLexema() + " não declarada!");
+            }
             this.token = this.lexico.nextToken();
         } else {
             throw new RuntimeException("Oxe, era para ser um identificador "
@@ -171,7 +178,7 @@ public class Sintatico3 {
         this.token = this.lexico.nextToken();
         if (!this.token.getLexema().equalsIgnoreCase(";")) {
             throw new RuntimeException("A besta de 9 caudas foi libertada, destruiu \";\" perto de \""
-            + token.getLexema() + "\", e atacou Konoha.");
+                    + token.getLexema() + "\", e atacou Konoha.");
         }
         this.token = this.lexico.nextToken();
     }
@@ -288,6 +295,8 @@ public class Sintatico3 {
         if ((token.getTipo() != Token.TIPO_IDENTIFICADOR)) {
             throw new RuntimeException("Esperava um identificador!");
         }
+        variables.add(token.getLexema());
+        currentPos++;
         token = lexico.nextToken();
     }
 
