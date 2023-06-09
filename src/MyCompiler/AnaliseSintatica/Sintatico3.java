@@ -109,7 +109,8 @@ public class Sintatico3 {
         token = lexico.nextToken();
         this.E();// EXPRESSAO
         if (!(token.getLexema().equalsIgnoreCase(";"))) {
-            throw new RuntimeException("A besta de 9 caudas foi libertada e destruiu a estrutura do código");
+            throw new RuntimeException("A besta de 9 caudas foi libertada, destruiu \";\" perto de \""
+                    + token.getLexema() + "\", e atacou Konoha.");
         }
         token = lexico.nextToken();
     }
@@ -169,8 +170,8 @@ public class Sintatico3 {
         currentPos++;
         this.token = this.lexico.nextToken();
         if (!this.token.getLexema().equalsIgnoreCase(";")) {
-            throw new RuntimeException("Tu vacilou  na delcaração de variável. "
-                    + "Pertinho de: " + this.token.getLexema());
+            throw new RuntimeException("A besta de 9 caudas foi libertada, destruiu \";\" perto de \""
+            + token.getLexema() + "\", e atacou Konoha.");
         }
         this.token = this.lexico.nextToken();
     }
@@ -312,5 +313,4 @@ public class Sintatico3 {
         }
         token = lexico.nextToken();
     }
-
 }

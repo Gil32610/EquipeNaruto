@@ -10,7 +10,9 @@ main(){
         f = 32;
         int h;
     }
-    h =10;
+}
+public void Methodd(float a){
+    a= 10;
 }
 
 $
